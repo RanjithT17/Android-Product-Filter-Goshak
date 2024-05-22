@@ -3,20 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web Application</title>
+    <title>Assignment</title>
 </head>
 <body>
-    <h1>Welcome to My Web Application</h1>
-    <ul>
-        <li><a href="app/src/main/AndroidManifest.xml">AndroidManifest.xml</a></li>
-        <li><a href="app/src/main/java/com/example/myapp/MainActivity.java">MainActivity.java</a></li>
-        <li><a href="app/src/main/res/layout/UI.xml">UI.xml</a></li>
-        <li><a href="app/img.gradle">img.gradle</a></li>
-        <li><a href="app/src/main/java/com/example/myapp/img.java">img.java</a></li>
-        <li><a href="app/src/main/res/layout/img.xml">img.xml</a></li>
-        <li><a href="module-builder/build.gradle">module builder.gradle</a></li>
-        <li><a href="build.gradle">project build.gradle</a></li>
-        <li><a href="app/src/main/res/values/strings.xml">string.xml</a></li>
-    </ul>
+    <h1>Assignment</h1>
+    
+    <h2>AndroidManifest.xml</h2>
+    <pre>
+        <?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myapp">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+    </pre>
+
+    <h2>MainActivity.java</h2>
+    <pre>
+        import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText editTextPrice;
+    private Spinner spinnerCategory;
+    private RecyclerView recyclerViewProducts;
+
+    private List<Product> productList;
+    private ProductAdapter productAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize views
+        editTextPrice = findViewById(R.id.editTextPrice);
+        spinnerCategory = findViewById(R.id.spinnerCategory);
+        recyclerViewProducts = findViewById(R.id.recyclerViewProducts);
+
+        // Initialize product list
+        productList = new ArrayList<>();
+
+        // Initialize RecyclerView
+        productAdapter = new ProductAdapter(productList);
+        recyclerViewProducts.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewProducts.setAdapter(productAdapter);
+
+        // Dummy data (replace with API data)
+        productList.add(new Product("iPhone 9", "An apple mobile which is nothing like apple", 549, "Apple", "Smartphones"));
+        productList.add(new Product("Samsung Universe 9", "Samsung's new variant", 599, "Samsung", "Smartphones"));
+        productList.add(new Product("Samsung Galaxy Book", "Samsung Galaxy Book S (2020) Laptop", 1499, "Samsung", "Laptops"));
+        productList.add(new Product("Microsoft Surface Laptop 4", "Style and speed", 1499, "Microsoft", "Laptops"));
+        // Add more products as needed
+
+        // Set up spinner with dummy categories (replace with API categories)
+        List<String> categories = new ArrayList<>();
+        categories.add("All"); // Add "All" option
+        categories.add("Smartphones");
+        categories.add("Laptops");
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(spinnerAdapter);
+    }
+}
+    </pre>
+
+    <h2>UI.xml</h2>
+    <pre>
+        <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <!-- Search bar for entering the price -->
+    <EditText
+        android:id="@+id/editTextPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter price"
+        android:inputType="numberDecimal"/>
+
+    <!-- Dropdown menu for selecting category -->
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextPrice"
+        android:layout_marginTop="16dp"/>
+
+    <!-- RecyclerView to display filtered products -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/spinnerCategory"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"/>
+
+</RelativeLayout>
+    </pre>
+
+    <h2>img.gradle</h2>
+    <pre>
+        implementation 
+        'com.squareup.picasso:picasso:2.71828'
+    </pre>
+
+    <h2>img.java</h2>
+    <pre>
+        import com.squareup.picasso.Picasso;
+
+        // Inside your activity or fragment
+        String imageUrl = "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg";
+        ImageView imageView = findViewById(R.id.imageView); // Assuming you have an ImageView with id "imageView" in your layout
+        Picasso.get().load(imageUrl).into(imageView);
+    </pre>
+
+    <h2>img.xml</h2>
+    <pre>
+        <uses-permission android:name="android.permission.INTERNET" />
+    </pre>
+
+    <h2>module-builder.gradle</h2>
+    <pre>
+        apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        applicationId "com.example.myapp"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+    </pre>
+
+    <h2>project build.gradle</h2>
+    <pre>
+        // Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+    </pre>
+
+    <h2>string.xml</h2>
+    <pre>
+        <resources>
+    <string name="app_name">MyApp</string>
+</resources>
+    </pre>
 </body>
 </html>
